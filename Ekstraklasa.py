@@ -460,12 +460,13 @@ def zestawpar():
 
 def zestawpar_show():
     # WYŚWIETLANIE ZESTAWU PAR KOLEJKI
+    typ = typy_load()
     print(f'Zestaw par dla kolejki nr {kolejka}')
     ile = []
     for i in range(len(mecze)):
         ile.append(len(mecze[i]) + len(data[i]) + len(wynik[i]))
     for i in range(len(mecze)):
-        print('{}. {} {} {} ({})'.format(i + 1, mecze[i], ' ' * (max(ile) - 15 - len(mecze[i])), data[i], wynik[i]))
+        print('{}. {} {} {} ({}) typ: {}'.format(i + 1, mecze[i], ' ' * (max(ile) - 15 - len(mecze[i])), data[i], wynik[i], typ[i]))
 
 
 def zliczanie():
