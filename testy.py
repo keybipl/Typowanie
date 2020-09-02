@@ -1,7 +1,63 @@
+# -*- coding: utf-8 -*-
 import sqlite3
+import mysql.connector
+
+bd = mysql.connector.connect(
+    host='sql7.freemysqlhosting.net',
+    user='sql7363086',
+    passwd='GAPFESBwKp',
+    database='sql7363086'
+)
+
+mycursor = bd.cursor()
+# mycursor.execute("CREATE TABLE Mecze (kolejka int, para varchar(50), date varchar(50))")
+# bd.commit()
 
 db = sqlite3.connect('terminarz.db')
 cursor = db.cursor()
+
+def typy_load():
+    # TWORZENIE LISTY TYPOW DANEJ KOLEJKI
+    cursor.execute('''SELECT typ FROM typowanie WHERE kolejka_nr="{}" AND typer="{}"'''.format(kolejka, typer.lower()))
+    typy = cursor.fetchall()
+    typ = []  # typy w danej kolejce
+    for i in typy:
+        typ.append(i[0])
+    return typ
+
+
+def zestawpar():
+    # TWORZENIE LISTY MECZÓW KOLEJKI
+    kolejka = 1
+    cursor.execute('''SELECT para FROM typowanie WHERE kolejka_nr="{}"'''.format(kolejka))
+    pary = cursor.fetchall()
+    mecze = []  # mecze danej kolejki
+    for i in pary:
+        mecze.append(i[0])
+    for i in range(8):
+        print(mecze[i])
+        test = 'abc'
+        mecz = mecze[i]
+        mycursor.execute("INSERT INTO Mecze (kolejka, para) VALUES (%s,%s)", (kolejka, mecz))
+        bd.commit()
+    print(mecze)
+    bd.close()
+    return mecze
+
+
+def zestawpar_show():
+    # WYŚWIETLANIE ZESTAWU PAR KOLEJKI
+    typ = typy_load()
+    print(f'Zestaw par dla kolejki nr {kolejka}')
+    ile = []
+    for i in range(len(mecze)):
+        ile.append(len(mecze[i]) + len(data[i]) + len(wynik[i]))
+    for i in range(len(mecze)):
+        print('{}. {} {} {} ({}) typ: {}'.format(i + 1, mecze[i], ' ' * (max(ile) - 15 - len(mecze[i])), data[i], wynik[i], typ[i]))
+
+
+
+
 
 
 class User:
@@ -85,24 +141,4 @@ def kolejka():
             print('Podaj proszę prawidłowy numer. To co zostało wpisane nie jest poprawną wartością')
     return kolejka
 
-
-typer = logowanie()
-User.kolejka = kolejka()
-gracz = User(typer=typer)
-mecze = gracz.mecze()
-data = gracz.terminy()
-wynik = gracz.wyniki()
-typ = gracz.typy_load()
-
-
-
-data = tworzenie()
-mecze = tworzenie()
-print(data)
-print(mecze)
-
-
-
-
-
-
+zestawpar()
