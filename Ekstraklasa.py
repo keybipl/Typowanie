@@ -288,7 +288,7 @@ def typowanieedit():
         termin = cursor.fetchall()
         daty = list(sum(termin, ()))
         kon = daty[i-1].split(' ')
-        if len(kon) != 3:
+        if len(kon) not in range(3,5):
             typek = input('Podaj typ meczu {}: '.format(mecze[i - 1]))
             cursor.execute(
                 '''UPDATE typowanie SET typ="{}" WHERE para="{}" AND typer="{}"'''.format(typek, mecze[i - 1], typer.lower()))
